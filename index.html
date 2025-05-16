@@ -7,7 +7,7 @@
   <meta name="description" content="Book your car rental online with GMS Car Rental Service in Nepal">
   <link rel="preconnect" href="https://www.google.com">
   <link rel="preconnect" href="https://www.gstatic.com" crossorigin>
-  <script src="https://www.google.com/recaptcha/api.js?render=6Lfp-TwrAAAAAIWBWJ5SCt9pGNg8qIWx8iheLZgR" async defer></script>
+  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
   <style>
     :root {
       --primary-color: #010067;
@@ -290,12 +290,6 @@
       cursor: not-allowed;
     }
 
-    .g-recaptcha {
-      margin: 20px 0;
-      display: flex;
-      justify-content: center;
-    }
-
     .status-message {
       padding: 12px;
       border-radius: 5px;
@@ -341,6 +335,12 @@
       border-top-color: var(--white);
       animation: spin 1s ease-in-out infinite;
       margin-left: 10px;
+    }
+
+    .g-recaptcha {
+      margin: 20px 0;
+      display: flex;
+      justify-content: center;
     }
 
     @keyframes spin {
@@ -406,7 +406,7 @@
     
     <div id="statusMessage" class="status-message" style="display: none;"></div>
     
-    <form id="bookingForm" action="https://formspree.io/f/xldbzjwo" method="POST">
+    <form id="bookingForm" action="https://formspree.io/f/YOUR_FORM_KEY" method="POST">
       <div class="form-row">
         <div class="form-col">
           <label for="firstName" class="required-field">First Name</label>
@@ -504,8 +504,7 @@
       <input type="hidden" id="carTypeInput" name="carType">
 
       <!-- reCAPTCHA -->
-      <div class="g-recaptcha" data-sitekey="6Lfp-TwrAAAAAIWBWJ5SCt9pGNg8qIWx8iheLZgR"></div>
-      <div class="error-message" id="recaptchaError"></div>
+      <div class="g-recaptcha" data-sitekey="YOUR_RECAPTCHA_SITE_KEY"></div>
 
       <button type="submit" class="btn-submit" id="submitBtn">
         Book Now
@@ -724,10 +723,8 @@
       // Validate reCAPTCHA
       const recaptchaResponse = grecaptcha.getResponse();
       if (!recaptchaResponse) {
-        showError('recaptchaError', 'Please complete the reCAPTCHA verification');
+        showStatusMessage('Please complete the reCAPTCHA verification', 'error');
         isValid = false;
-      } else {
-        clearError('recaptchaError');
       }
 
       return isValid;
@@ -753,8 +750,9 @@
         // Prepare Formspree submission
         const formData = new FormData(this);
         
-        // Add reCAPTCHA response
-        formData.append('g-recaptcha-response', grecaptcha.getResponse());
+        // Add reCAPTCHA token
+        const recaptchaResponse = grecaptcha.getResponse();
+        formData.append('g-recaptcha-response', recaptchaResponse);
         
         // Submit to Formspree
         const response = await fetch(this.action, {
@@ -765,23 +763,24 @@
           }
         });
         
-        if (response.ok) {
+        const responseData = await response.json();
+        
+        if (response.ok && responseData.success) {
           // Success
           showStatusMessage('Thank you for your booking! We will contact you shortly.', 'success');
           this.reset();
           localStorage.removeItem('carRentalFormData');
+          
+          // Reset reCAPTCHA
+          grecaptcha.reset();
           
           // Reset UI
           document.querySelectorAll('.fuel-btn, .car-type').forEach(el => {
             el.classList.remove('selected');
           });
           document.getElementById('carTypesContainer').classList.remove('active');
-          
-          // Reset reCAPTCHA
-          grecaptcha.reset();
         } else {
-          const errorData = await response.json();
-          throw new Error(errorData.error || 'Submission failed');
+          throw new Error(responseData.error || 'Submission failed');
         }
       } catch (error) {
         showStatusMessage(`Error: ${error.message}. Please try again.`, 'error');
