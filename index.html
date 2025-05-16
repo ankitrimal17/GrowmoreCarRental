@@ -344,6 +344,14 @@
       justify-content: center;
     }
 
+    #g-recaptcha-response {
+      display: block !important;
+      position: absolute;
+      margin: -50px 0 0 0 !important;
+      z-index: -999999;
+      opacity: 0;
+    }
+
     @keyframes spin {
       to { transform: rotate(360deg); }
     }
@@ -407,7 +415,7 @@
     
     <div id="statusMessage" class="status-message" style="display: none;"></div>
     
-    <form id="bookingForm" action="https://formspree.io/f/xldbzjwo" method="POST">
+    <form id="bookingForm" action="https://formspree.io/f/YOUR_FORM_KEY" method="POST">
       <div class="form-row">
         <div class="form-col">
           <label for="firstName" class="required-field">First Name</label>
@@ -820,6 +828,12 @@
       // Add date validation on change
       document.getElementById('pickupDate').addEventListener('change', validateDates);
       document.getElementById('returnDate').addEventListener('change', validateDates);
+      
+      // Make reCAPTCHA required
+      var el = document.getElementById('g-recaptcha-response'); 
+      if (el) { 
+        el.setAttribute('required', 'required'); 
+      }
     });
   </script>
 </body>
