@@ -4,9 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Affordable Car Rental in Kathmandu, Nepal | Self-Drive & With Driver</title>
-  <link rel="icon" type="image/png" href="images/gmscarrentalLOGO.png">
+  <link rel="icon" type="image/jpeg" href="images/gmscarrentalLOGO.png">
   <meta name="description" content="Affordable car rental service in Kathmandu, Nepal. Choose self-drive or rent with a driver. Easy booking for travel, business, or daily use. Reliable and flexible options.">
-  <meta name="keywords" content="affordable car rental Kathmandu, car hire Nepal, self-drive car Kathmandu, rent car with driver Nepal, cheap car rental Kathmandu">
+  <meta name="keywords" content="car rental, affordable car rental Kathmandu, car hire Nepal, self-drive car Kathmandu, rent car with driver Nepal, cheap car rental Kathmandu, car rental nepal, car rental in ktm">
   <link rel="preconnect" href="https://www.google.com">
   <link rel="preconnect" href="https://www.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -100,11 +100,15 @@
           <label for="pickupDate" class="required-field">Pickup Date</label>
           <input type="date" id="pickupDate" name="pickupDate" required>
           <div class="error-message" id="pickupDateError"></div>
+          <label for="pickupTime" class="required-field" style="margin-top: 10px;">Pickup Time</label>
+          <input type="time" id="pickupTime" name="pickupTime" required>
         </div>
         <div class="form-col">
           <label for="returnDate" class="required-field">Return Date</label>
           <input type="date" id="returnDate" name="returnDate" required>
           <div class="error-message" id="returnDateError"></div>
+          <label for="returnTime" class="required-field" style="margin-top: 10px;">Return Time</label>
+          <input type="time" id="returnTime" name="returnTime" required>
         </div>
       </div>
 
@@ -113,30 +117,25 @@
         <div class="option-container">
           <div class="drive-btn" onclick="selectDriveType('self')">
             <input type="radio" name="driveType" id="self" value="self">
-            <i class="fa-solid fa-car"></i>
             Self Drive
           </div>
           <div class="drive-btn" onclick="selectDriveType('driver')">
             <input type="radio" name="driveType" id="driver" value="driver">
-            <i class="fas fa-user-tie"></i>
             With Driver
           </div>
         </div>
         <div class="error-message" id="driveTypeError"></div>
       </div>
 
-
       <div class="option-group">
         <label class="required-field">Car Fuel Type</label>
         <div class="option-container">
           <div class="fuel-btn" onclick="selectFuelType('petrol')">
             <input type="radio" name="fuelType" id="petrol" value="petrol">
-            <i class="fa-solid fa-gas-pump"></i>
             Petrol/Diesel
           </div>
           <div class="fuel-btn" onclick="selectFuelType('electric')">
             <input type="radio" name="fuelType" id="electric" value="electric">
-            <i class="fa-solid fa-bolt"></i>
             Electric
           </div>
         </div>
